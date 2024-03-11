@@ -8,10 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 //adicionando o DataContext como um Service
-builder.Services.AddDbContext<DataContext>(options => 
+builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+//Habilitando CORS
+builder.Services.AddCors(); // Continuar no http pipeline, usar na ordem correta
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // builder.Services.AddEndpointsApiExplorer(); REMOVIDO PQ NAO ESTAMOS USANDO SWAGGER
@@ -29,6 +33,15 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//Continuando configuracao do CORS
+app.UseCors(
+    corsPolicyBuilder =>
+             corsPolicyBuilder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("https://localhost:4200")
+);
 
 app.MapControllers();
 
