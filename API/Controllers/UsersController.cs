@@ -1,12 +1,16 @@
-﻿using API.Data;
+﻿using API.Controller;
+using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
-[ApiController]
-[Route("api/[controller]")] // https://localhost:5001/api/users/[http-method]
-public class UsersController : ControllerBase
+// [ApiController]    - Passamos herdar da BaseApiController
+// [Route("api/[controller]")] // https://localhost:5001/api/users/[http-method]- Passamos herdar da BaseApiController
+
+[Authorize] //APlica pra todos metodos
+public class UsersController : BaseApiController
 {
     private readonly DataContext _context; //Pode ser usado em toda a classe
 
@@ -16,6 +20,7 @@ public class UsersController : ControllerBase
     }
 
     //API ENDPOINTS
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
@@ -23,6 +28,7 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
 
+    // [Authorize] //SO quem tem token valido pode ver essa parte
     [HttpGet("{id}")] //https://localhost:5001/api/users/2
     public async Task<ActionResult<AppUser>> GetUser(int id)
     {
