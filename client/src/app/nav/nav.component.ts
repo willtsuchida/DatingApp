@@ -3,6 +3,8 @@ import { AccountService } from '../_services/account.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { User } from '../_models/user.model';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -14,7 +16,7 @@ export class NavComponent implements OnInit {
   // currentUser$: Observable<User | null> = of(null); Não precisa ficar repetindo, esse observable ja existe no Service, e ele ta injetado aqui.
   myForm: FormGroup = new FormGroup({});
 
-  constructor(public accountService: AccountService) { } //tem que ser public pra usar o observable no template
+  constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) { } //tem que ser public pra usar o observable no template
 
   ngOnInit(): void {
     this.myForm = new FormGroup({
@@ -30,15 +32,17 @@ export class NavComponent implements OnInit {
     this.model = { username: this.myForm.get('username')?.value, password: this.myForm.get('password')?.value }
     console.log(this.model);
     this.accountService.login(this.model).subscribe({
-      next: response => {
-        console.log(response);
-      },
-      error: error => console.log(error)
+      next: _ => this.router.navigateByUrl('/members'), //eh comum user o underscore qnd n usa, msm coisa q ()
+      error: error => {
+        this.toastr.error(error.error);
+      }
     });
   }
 
   logout() {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
+
   }
 
 }
