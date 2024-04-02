@@ -33,16 +33,13 @@ export class NavComponent implements OnInit {
     console.log(this.model);
     this.accountService.login(this.model).subscribe({
       next: _ => this.router.navigateByUrl('/members'), //eh comum user o underscore qnd n usa, msm coisa q ()
-      error: error => {
-        this.toastr.error(error.error);
-      }
-    });
+      // error: error => {this.toastr.error(error.error)}  --> Agora esta sendo handled pelo Interceptor
+    })
   }
 
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
-
   }
 
 }

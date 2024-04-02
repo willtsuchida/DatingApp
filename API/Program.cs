@@ -1,3 +1,4 @@
+using API;
 using API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,9 @@ var app = builder.Build();
 //     app.UseSwagger(); REMOVIDO PQ NAO ESTAMOS USANDO SWAGGER
 //     app.UseSwaggerUI(); REMOVIDO PQ NAO ESTAMOS USANDO SWAGGER
 // }
+
+//Middleware - error was parsed into a readable json to client
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
