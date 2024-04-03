@@ -17,7 +17,10 @@ public static class ApplicationServiceExtensions
         //Habilitando CORS
         services.AddCors(); // Continuar no http pipeline, usar na ordem correta
 
+        //AddScoped makes it injectable...
         services.AddScoped<ITokenService, TokenService>(); //AddTransient, AddScoped, Add Singleton
+        services.AddScoped<IUserRepository, UserRepository>(); // 
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //single project...
 
         return services;
     }

@@ -10,5 +10,6 @@ public class DataContext : DbContext
     }
 
     public DbSet<AppUser> Users { get; set; } //Name of table
+    
 
 }
