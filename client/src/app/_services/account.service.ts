@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({       // Decorator, Angular services can be injected into components or other services
   providedIn: 'root'
 })
 export class AccountService {
 
-  baseUrl: string = 'https://localhost:5001/api/';
+  baseUrl: string = environment.apiUrl;
   //Behaviour subject to monitor if user is logged in
   //its an special kind of observable, it allows an observable to have an initial value that we can use elsewhere in the app
   private currentUserSource = new BehaviorSubject<User | null>(null); //Union type
