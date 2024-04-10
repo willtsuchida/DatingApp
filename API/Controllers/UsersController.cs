@@ -1,4 +1,5 @@
-﻿using API.Controller;
+﻿using System.Security.Claims;
+using API.Controller;
 using API.Data;
 using API.Entities;
 using AutoMapper;
@@ -45,5 +46,25 @@ public class UsersController : BaseApiController
         // var user = await _userRepository.GetUserByUsernameAsync(username);
         // var userToReturn = _mapper.Map<MemberDto>(user); --> Agora faz no Repository direto
         return await _userRepository.GetMemberAsync(username);
+    }
+
+    [HttpPut] //O username vai ser pego do token, nao vamos passar por parametro.
+    public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+    {
+
+        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //eh oq usamos prra username No token eh NameId
+
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+
+        if (user == null) return NotFound();
+
+        //No var user o EF fica tracking o user.
+
+        _mapper.Map(memberUpdateDto, user); //overwriting o user
+
+        if (await _userRepository.SaveAllAsync()) return NoContent(); //204 REST
+
+        //se nao fazer nenhuma mudanca
+        return BadRequest("Failed to update user");
     }
 }
