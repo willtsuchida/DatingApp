@@ -13,13 +13,13 @@ public static class IdentityServiceExtension
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuerSigningKey = true, //se nao qlqr token criado por fora via ser aceito
+            ValidateIssuerSigningKey = true, //se nao qlqr token criado por fora vai ser aceito
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(config["TokenKey"])
                 ),
             ValidateIssuer = false,
             ValidateAudience = false
-        }; //Adicioanr o middleware to CORS
+        }; //Add o middleware to CORS
     });
         return services;
     }

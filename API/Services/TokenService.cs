@@ -10,7 +10,7 @@ namespace API.Services;
 public class TokenService : ITokenService
 {
     private readonly IConfiguration _config;
-    private readonly SymmetricSecurityKey _key; //2 types of key, simetrica (so fica no server) - usa mesma key pra cripto e descripto -- Asimetrica usa qnd o server e client precisa criptografar algo
+    private readonly SymmetricSecurityKey _key;
 
     public TokenService(IConfiguration config)
     {

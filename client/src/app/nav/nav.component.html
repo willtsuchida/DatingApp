@@ -3,7 +3,6 @@
         <a class="navbar-brand" routerLink="/">Dating App</a>
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
-            <!-- ng coitainer nao aparece no dom caso nao passe na validacao do ngif-->
             <ng-container *ngIf="accountService.currentUser$ | async">
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>

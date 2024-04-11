@@ -5,8 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  //usar account service pra ver a permissao
-  //nao eh uma classe, temos que injetar de outra maneira
+
   const accountService = inject(AccountService);
   const toastr = inject(ToastrService)
 

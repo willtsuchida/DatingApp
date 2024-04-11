@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
 
     public async Task<MemberDto> GetMemberAsync(string username)
     {
-        // WITHOU AutoMapper
+        // WITHOUT AutoMapper
         // return await _context.Users
         //     .Where(x => x.UserName == username)
         //     .Select(user => new MemberDto{

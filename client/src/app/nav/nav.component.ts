@@ -13,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavComponent implements OnInit {
   model: any = {};
-  // currentUser$: Observable<User | null> = of(null); Não precisa ficar repetindo, esse observable ja existe no Service, e ele ta injetado aqui.
   myForm: FormGroup = new FormGroup({});
 
   constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) { } //tem que ser public pra usar o observable no template
@@ -23,8 +22,6 @@ export class NavComponent implements OnInit {
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
-
-    // this.currentUser$ = this.accountService.currentUser$; Usar o do Service
   }
 
 
@@ -33,7 +30,6 @@ export class NavComponent implements OnInit {
     console.log(this.model);
     this.accountService.login(this.model).subscribe({
       next: _ => this.router.navigateByUrl('/members'), //eh comum user o underscore qnd n usa, msm coisa q ()
-      // error: error => {this.toastr.error(error.error)}  --> Agora esta sendo handled pelo Interceptor
     })
   }
 

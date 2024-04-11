@@ -9,7 +9,7 @@ public class ExceptionMiddleware
     private readonly ILogger<ExceptionMiddleware> _logger;
     private readonly IHostEnvironment _env;
 
-    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env) //RequestDelegate is the esential, others are optional
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env)
     {
         _next = next;
         _logger = logger;
@@ -25,7 +25,7 @@ public class ExceptionMiddleware
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
-            //returning to the client
+
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; //500
 

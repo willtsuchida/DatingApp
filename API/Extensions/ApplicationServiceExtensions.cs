@@ -21,6 +21,9 @@ public static class ApplicationServiceExtensions
         services.AddScoped<ITokenService, TokenService>(); //AddTransient, AddScoped, Add Singleton
         services.AddScoped<IUserRepository, UserRepository>(); // 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //single project...
+        services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+
+
 
         return services;
     }
