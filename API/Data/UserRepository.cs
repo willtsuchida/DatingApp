@@ -34,11 +34,39 @@ public class UserRepository : IUserRepository
         //Project Faz o Include automatico pra pegar as Photos
     }
 
-    public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+
+    // BEFORE PAGINATION
+    // public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+    // {
+    //     return await _context.Users
+    //         .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+    //         .ToListAsync();
+    // }
+    public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
-        return await _context.Users
-            .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-            .ToListAsync();
+        var query = _context.Users.AsQueryable();
+
+        query = query.Where(u => u.UserName != userParams.CurrentUsername); // exclude current user logged in/
+        query = query.Where(u => u.Gender == userParams.Gender);
+        //query for age range
+
+        var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1)); //oldest
+        var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
+
+        query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+        //order result
+        query = userParams.OrderBy switch
+        {
+            "created" => query.OrderByDescending(u => u.Created),
+            _ => query.OrderByDescending(u => u.LastActive) // _ default
+        };
+
+        return await PagedList<MemberDto>.CreateAsync(
+            query.AsNoTracking().ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
+            userParams.PageNumber,
+            userParams.PageSize
+            );
     }
 
     public async Task<AppUser> GetUserByIdAsync(int id)
