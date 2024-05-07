@@ -21,7 +21,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
-
   }
 
   initializeForm() {
@@ -52,7 +51,7 @@ export class RegisterComponent implements OnInit {
 
   register() {
     const dob = this.getDateOnly(this.registerUserForm.controls['dateOfBirth'].value);
-    const values = {...this.registerUserForm.value, dateOfBirth: dob}; //set dateOfBirth from form as const dob using spread operator
+    const values = { ...this.registerUserForm.value, dateOfBirth: dob }; //set dateOfBirth from form as const dob using spread operator
     this.accountService.register(values).subscribe({
       next: () => {
         this.router.navigateByUrl('/members');
@@ -67,9 +66,9 @@ export class RegisterComponent implements OnInit {
     this.cancelRegister.emit(false); //emitindo valor false pra tornar o registerMode como false no parent
   }
 
-  private getDateOnly(dob: string | undefined){//gets from form control as string
+  private getDateOnly(dob: string | undefined) {//gets from form control as string
     if (!dob) return;
     let theDob = new Date(dob); //date object to work with.
-    return new Date(theDob.setMinutes(theDob.getMinutes()-theDob.getTimezoneOffset())).toISOString().slice(0,10); //slice char 0 to 10.. 
+    return new Date(theDob.setMinutes(theDob.getMinutes() - theDob.getTimezoneOffset())).toISOString().slice(0, 10); //slice char 0 to 10.. 
   }
 }

@@ -78,7 +78,7 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users
             .Include(p => p.Photos) //Creates a infinite cycle/loop, solve with dto
-            .FirstOrDefaultAsync(x => x.UserName == username); //ou SingleOrDefauult
+            .SingleOrDefaultAsync(x => x.UserName == username); //ou SingleOrDefauult
     }
 
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
